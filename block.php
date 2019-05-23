@@ -5,7 +5,8 @@
  *  
  *  In middleware, for each line, iterate through all block objects until one is true or no more exist.
  */
-class block{
+class block implements JsonSerializable
+{
 	
 	// Friendly name
 	private $name;
@@ -73,4 +74,14 @@ class block{
 			$this->inBlock = true;
 		}
 	}
+
+	public function jsonSerialize()
+    {
+        return 
+        [
+			'name'   => $this->name,
+			'startPattern'	=> $this->startPattern,
+			'endPattern'	=> $this->endPattern
+        ];
+    }
 }

@@ -7,7 +7,8 @@ require_once('block.php');
  *  Used for checking if a section of multi-line text is a single block of text
  *  rather than individual line items
  */
-class blocks{
+class blocks implements JsonSerializable
+{
 	
 	private $blocks = array();
 	
@@ -31,5 +32,13 @@ class blocks{
 			}
 		}
 	}
+
+	public function jsonSerialize()
+    {
+        return 
+        [
+            'blocks'   => $this->blocks
+        ];
+    }
 	
 }

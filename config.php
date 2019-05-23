@@ -4,7 +4,8 @@ require_once('global.php');
 require_once('configNode.php');
 require_once('blocks.php');
 
-class config{
+class config implements JsonSerializable
+{
 	
 	private $nodes = array();
 	private $blocks;
@@ -63,5 +64,15 @@ class config{
 			}
 		}
 	}
+	}
+
+	public function jsonSerialize()
+    {
+        return 
+        [
+			'blocks'	=> $this->blocks,
+			'nodes'		=> $this->nodes
+        ];
+    }
 	
 }
