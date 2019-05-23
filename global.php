@@ -1,5 +1,6 @@
 <?php
 
+/*
 if(!function_exists('array_key_first')){
     function array_key_first(array $array){
         if($array === []){
@@ -9,6 +10,7 @@ if(!function_exists('array_key_first')){
     }
 }
 
+// This function worked in small tests, but doesn't work in arrays of objects apparently.
 if(!function_exists('array_key_last')){
     function array_key_last(array $array){
         if($array === []){
@@ -17,4 +19,4 @@ if(!function_exists('array_key_last')){
         return array_key_first(array_slice($array, -1));
     }
 }
-
+*/
