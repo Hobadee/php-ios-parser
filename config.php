@@ -3,21 +3,28 @@
 require_once('global.php');
 require_once('configNode.php');
 require_once('blocks.php');
+require_once('parsers.php');
 
 class config implements JsonSerializable
 {
 	
 	private $nodes = array();
 	private $blocks;
+	private $parsers;
 	
 	private $level_pattern = '/^(\s*)/';
 	private $config_pattern = '/^\s*(.*?)\s*$/';
 	private $comment_pattern = '/^\s*!/';
 	private $newline_pattern = '/[\r\n]+/';
 	
-	public function addParameter($param, $level){
+	public function addParameter($param, $level, $parser = null){
 		if($level <= 0){
-			$this->nodes[] = new configNode($param);
+			if($parser){
+				$this->nodes[] = new $parser($param);
+			}
+			else{
+				$this->nodes[] = new configNode($param);
+			}
 		}
 		else{
 			end($this->nodes);
@@ -25,10 +32,15 @@ class config implements JsonSerializable
 			$this->nodes[$lastIndex]->addParameter($param, --$level);
 		}
 	}
+
+	public function addParser($parser){
+		$this->parsers->add($parser);
+	}
 	
-	
+
 	public function __construct(){
 		$this->blocks = new blocks();
+		$this->parsers = new parsers();
 	}
 	
 	public function addBlock(string $start, string $end, string $name = ''){

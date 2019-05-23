@@ -5,8 +5,8 @@ require_once('global.php');
 class configNode implements JsonSerializable
 {
 	
-	private $parameter;
-	private $children = array();
+	protected $parameter;
+	protected $children = array();
 	
 	public function getParameter(){
 		return $this->parameter;
