@@ -16,13 +16,20 @@ class blocks implements JsonSerializable
 		$this->blocks[] = new block($start, $end, $name);
 	}
 	
+	/**
+	 * @brief Check if we have any open blocks or not.
+	 * 
+	 * @param string $line Line to parse
+	 * @return int 0 if not in a block, 1 if in a block, -1 if returning from a block.
+	 */
 	public function check(string $line){
 		foreach($this->blocks as $block){
-			if($block->check($line)){
-				return true;
+			$check = $block->check($line);
+			if($check){
+				return $check;
 			}
 		}
-		return false;
+		return 0;
 	}
 	
 	public function getBlock(){

@@ -37,6 +37,8 @@ class config implements JsonSerializable
 	
 	
 	public function load($config){
+
+		$block = "";
 		$config = preg_split($this->newline_pattern, $config);
 		
 		foreach($config as $line){
@@ -47,23 +49,30 @@ class config implements JsonSerializable
 			preg_match($this->config_pattern, $line, $config_matches);
 			$param = $config_matches[1];
 			
-			if($this->blocks->check($line)){
-				$block = $line.$block;
+			// Check if we are in a block or not.
+			$blockCheck = $this->blocks->check($line);
+			if($blockCheck){
+				// We are in a block.  Concatenate $block.
+				$block = $block.$line;
+				if($blockCheck == -1){
+					// Block is finishing.  Flush $block out.
+					$param = $block;
+					$this->addParameter($param, $level);
+					$block = "";
+				}
 			}
 			else if(preg_match($this->comment_pattern, $line)){
 				// Line is comment; Do nothing!
 			}
 			else{
-				/*
-				if($block){
-					$param = $block;
+				if(($parser = $this->parsers->parse($param)) !== null){
+					$this->addParameter($param, $level, $parser);
 				}
-				*/
-				$this->addParameter($param, $level);
-				$block = null;
+				else{
+					$this->addParameter($param, $level);
+				}
 			}
 		}
-	}
 	}
 
 	public function jsonSerialize()

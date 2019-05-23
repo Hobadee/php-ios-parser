@@ -45,26 +45,39 @@ class block implements JsonSerializable
 	/**
 	 *  @brief Check if we are in a block or not
 	 *  
-	 *  @param [string] $line Line to parse
-	 *  @return true if we are part of a block, false otherwise.
+	 *  @param string $line Line to parse
+	 *  @return int 0 if not in a block, 1 if in a block, -1 if returning from a block.
 	 */
 	public function check(string $line){
-		if(!$this->inBlock){
+		if(!$this->inBlock()){
 			// We are not currently in a block.  Searching for the start of a block.
 			$pattern = $this->startPattern;
-		}else{
+			// Set return value; we overwrite it later if we need to.
+			$return = 0;
+		} else{
 			// We are currently in a block.  Searching for the end of a block.
 			$pattern = preg_replace('/\$1/', $this->endDeliminator, $this->endPattern);
+			// Set return value; we overwrite it later if we need to.
+			$return = 1;
 		}
+
+		// Check if we are start/ending a block
 		if(preg_match($pattern, $line, $matches)){
 			if(!$this->inBlock){
+				// We are entering a new block.
+				$return = 1;
 				// If this doesn't set, there was no extraction.  Don't care, supress errors.
-				@$this->endDeliminator = $matches[1];
+				if(array_key_exists(1, $matches)){
+					$this->endDeliminator = $matches[1];
+				}
+			}
+			else{
+				// We are exiting a block.
+				$return = -1;
 			}
 			$this->blockToggle();
-			return true;	// The last line is still part of the block!  If we are toggling inBlock, we are part of a block!
 		}
-		return $this->inBlock;
+		return $return;
 	}
 	
 	private function blockToggle(){
