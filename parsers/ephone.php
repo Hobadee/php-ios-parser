@@ -7,7 +7,7 @@ class ephone extends \parser
 
     private static $canParseSearch = "/^ephone\s+[0-9]+/";
 
-    private $name = "ephone";
+    private $type = "ephone";
     private $description = "ephone Parser";
     private $ephoneNum;
 
@@ -29,7 +29,7 @@ class ephone extends \parser
     {
         return 
         [
-            'name'          => $this->name,
+            'type'          => $this->type,
             'parameter'     => $this->parameter,
             'ephoneNum'     => $this->ephoneNum,
             'children'      => $this->children
