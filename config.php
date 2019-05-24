@@ -92,6 +92,7 @@ class config implements JsonSerializable
         return 
         [
 			'blocks'	=> $this->blocks,
+			'parsers'	=> $this->parsers,
 			'nodes'		=> $this->nodes
         ];
     }

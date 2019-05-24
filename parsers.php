@@ -1,6 +1,6 @@
 <?php
 
-class parsers
+class parsers implements JsonSerializable
 {
 
     private $parsers = array();
@@ -15,6 +15,13 @@ class parsers
                 return $parser;
             }
         }
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'parsers' => $this->parsers
+        ];
     }
 
 }
