@@ -19,6 +19,8 @@ $config = new config();
 
 $config->addBlock('/^ certificate/', '/^\s+quit/', 'Certificates');
 $config->addBlock('/^banner [a-z]+ (.+)$/', '/^\s*$1/', 'Banners');
+$config->addBlock('/^boot-start-marker/', '/boot-end-marker/', 'Boot File');
+
 
 $config->addParser(parsers\ephone::class);
 $config->addParser(parsers\ephone_dn::class);
