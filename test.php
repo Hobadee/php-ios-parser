@@ -5,6 +5,9 @@ require_once('config.php');
 require_once('parser.php');
 require_once('parsers/ephone.php');
 require_once('parsers/ephone_dn.php');
+require_once('parsers/logging.php');
+require_once('parsers/service.php');
+require_once('parsers/version.php');
 
 
 $file1 = 'pbx01.rmd-confg';
@@ -12,7 +15,7 @@ $file2 = 'pbx01.all.ios';
 $file = $file1;
 
 $dir = '/Users/erick/src/IOSParser/configs';
-$uri = $dir.$file;
+$uri = $dir.'/'.$file;
 
 
 $config = new config();
@@ -24,6 +27,9 @@ $config->addBlock('/^boot-start-marker/', '/boot-end-marker/', 'Boot File');
 
 $config->addParser(parsers\ephone::class);
 $config->addParser(parsers\ephone_dn::class);
+$config->addParser(parsers\logging::class);
+$config->addParser(parsers\service::class);
+$config->addParser(parsers\version::class);
 
 $config->load(file_get_contents ($uri));
 
